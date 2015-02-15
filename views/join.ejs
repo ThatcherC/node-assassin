@@ -1,0 +1,35 @@
+<!-- views/join.ejs -->
+<!doctype html>
+<html>
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>Join a Game</title>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+    <style>
+        body        { padding-top:40px; word-wrap:break-word; }
+    </style>
+</head>
+<body>
+	<div class="container">
+		<div class="page-header text-center">
+			<h1><span class="fa fa-crosshairs"></span> Join a Game</h1>
+			<a href="/dash" class="btn btn-default btn-sm">Dashboard</a>
+		</div>
+		<% if (message.length > 0) { %>
+			<div class="alert alert-danger"><%= message %></div>
+		<% } %>
+		<div class="row">
+			<div class="col-sm-6 col-sm-offset-3">
+				<form action="/join" method="POST">
+					<div class="form-group">
+						<label>Game ID Number</label>
+						<input type="text" class="form-control" name="gameID">
+					</div>
+					<button type="submit" class="btn btn-warning btn-lg">Join</button>
+				</form>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

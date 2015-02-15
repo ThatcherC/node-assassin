@@ -1,0 +1,83 @@
+<!-- views/dash.ejs -->
+<!doctype html>
+<html>
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>Assassin Dashboard</title>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+    <style>
+        body        { padding-top:20px; word-wrap:break-word; }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <div class="page-header text-center">
+        <h1><span class="fa fa-crosshairs"></span> Dashboard</h1>
+        <a href="/logout" class="btn btn-default btn-sm">Logout</a>
+    </div>
+
+    <div class="row">
+		<% if(user.gameid==0){ %>
+			   <div class="col-sm-12 text-center">
+				 <div class="alert alert-info">
+					 <a href="/join" class="alert-link"><h3><span class="fa fa-users"></span><strong> Join a game!</strong></h3></a></br>
+					 You'll have to <a href="/join" class="alert-link">join a game</a> before you can play.
+				 </div>
+			 </div>
+		<% } %>
+     </div>
+     <div class="row">
+        <div class="col-sm-6">
+            <div class="well">
+                <h3><span class="fa fa-user"></span> My Information</h3>
+
+                    <p>
+						<strong>Name</strong>: <%= user.name %><br>
+                        <strong>Game ID</strong>: <%= user.gameid %><br>
+                        <strong>Status</strong>: <%= user.status %><br>
+                        <strong>Secret Phrase</strong>: <%= user.passphrase %>
+                    </p>
+
+            </div>
+        </div>
+    </div>
+    
+    <% if(postKillMessage.length > 0){ %>
+		<div class="row">
+			<div class="col-sm-12 text-center">
+				<div class="alert alert-info">
+					<%= postKillMessage %>
+				</div>
+			</div>	
+		 </div>
+	 <% } %>
+    
+    <%if (targets.length > 0){ %>
+		<% for(var i in targets){ %>
+			<div class="row">
+				<div class="col-sm-6">
+					<div class="well">
+						<span class="fa fa-user"></span> Target Info
+							
+						<p>
+							<strong>Name</strong>: <%= targets[i].name %><br>			
+						</p>
+						<form action="/dash" method="POST">
+							<input type="hidden" value="<%=targets[i].id%>" class="form-control" name="targetID">
+							<div class="form-group">
+								<label>Target's Pass Phrase</label>
+								<input type="text" class="form-control" name="passphrase">
+							</div>
+							<button type="submit" class="btn btn-warning btn-lg">Submit</button>
+						</form>
+					</div>
+				</div>
+			</div>
+		<% } %>
+	<% } %>
+
+</div>
+</body>
+</html>
