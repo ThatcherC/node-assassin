@@ -15,7 +15,7 @@
 
     <div class="page-header text-center">
         <h1><span class="fa fa-crosshairs"></span> Dashboard</h1>
-        <a href="/logout" class="btn btn-default btn-sm">Logout</a>
+        <a href="/assassin/logout" class="btn btn-default btn-sm">Logout</a>
     </div>
 
     <div class="row">
@@ -23,7 +23,7 @@
 			   <div class="col-sm-12 text-center">
 				 <div class="alert alert-info">
 					 <a href="/join" class="alert-link"><h3><span class="fa fa-users"></span><strong> Join a game!</strong></h3></a></br>
-					 You'll have to <a href="/join" class="alert-link">join a game</a> before you can play.
+					 You'll have to <a href="/assassin/join" class="alert-link">join a game</a> before you can play.
 				 </div>
 			 </div>
 		<% } %>
@@ -64,7 +64,7 @@
 						<p>
 							<strong>Name</strong>: <%= targets[i].name %><br>			
 						</p>
-						<form action="/dash" method="POST">
+						<form action="/assassin/dash" method="POST">
 							<input type="hidden" value="<%=targets[i].id%>" class="form-control" name="targetID">
 							<div class="form-group">
 								<label>Target's Pass Phrase</label>

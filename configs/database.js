@@ -3,6 +3,6 @@ module.exports = {
 		'host':'localhost',
 		'user':'root',
 		'password':'he1icopter',
-		'database':'Assassin'}
+		'database':'assassin'}
 	};
 
