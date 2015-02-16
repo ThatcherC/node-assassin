@@ -40,7 +40,7 @@ module.exports = function(app, passport,db){
 			});
 	});
 	
-	app.post('/dash',isLoggedIn,function(req,res){
+	app.post('/assassin/dash',isLoggedIn,function(req,res){
 		//check if the passphrase matches
 		//if it does, put in a kill record
 		//else, return a failure message
@@ -50,12 +50,12 @@ module.exports = function(app, passport,db){
 					req.flash("postKillMessage","Success!");
 					//record the kill
 					db.query("insert into kills values(?,?,?,NULL);",
-						[req.user.id,req.body.targetID,req.user.gameID],
+						[req.user.id,req.body.targetID,req.user.gameid],
 						function(err,rows){
 							if(err)throw err;
 						});
 					//update player status
-					db.query("update users set status='DEAD' where id=?;",
+					db.query("update users set status='DEAD',gameid=0 where id=?;",
 						[req.body.targetID],function(err,rows){
 								if(err)throw err;
 						});
@@ -107,6 +107,6 @@ module.exports = function(app, passport,db){
 		if (req.isAuthenticated())
 			return next();
 		// if they aren't redirect them to the home page
-		res.redirect('/');
+		res.redirect('/assassin/');
 	}
 };
