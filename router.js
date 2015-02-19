@@ -96,6 +96,12 @@ module.exports = function(app, passport,db){
 
 	});
 	
+	app.get('/assassin/gameMaker',isLoggedIn,function(req,res){
+		res.render('gameManager.ejs',{gameid:req.user.gameid});
+	});
+	
+	
+	
 	app.get('/assassin/logout',function(req,res){
 		req.logout();
 		res.redirect('/assassin/');

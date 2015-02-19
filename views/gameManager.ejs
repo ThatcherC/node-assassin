@@ -1,0 +1,36 @@
+<!-- views/dash.ejs -->
+<!doctype html>
+<html>
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>Game Manager</title>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+    <style>
+        body        { padding-top:20px; word-wrap:break-word; }
+    </style>
+</head>
+<body>
+	<div class="container">
+		<div class="page-header text-center">
+			<h1><span class="fa fa-plus-square-o"></span> Game Maker</h1>
+			<a href="/assassin/dash" class="btn btn-default btn-sm">Dash</a>
+		</div>
+		
+		<% if(gameid!=0){ %>
+			<div class="row">
+				<div class="alert alert-danger">You can't create a game if you're already in one!</div>
+			</div>
+		<% }else{ %>
+			<div class="row">
+				<div class="col-sm-6">
+					<div class="well">
+						Game creation stuff here
+					</div>
+				</div>
+			</div>
+		<% } %>
+		
+	</div>
+</body>
+</head>
