@@ -7,9 +7,6 @@
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
     <link href="static/css/datepicker.css" rel="stylesheet">
-    <script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
-    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
-    <script src="static/js/bootstrap-datepicker.js"></script>
     <style>
         body        { padding-top:20px; word-wrap:break-word; }
     </style>
@@ -45,7 +42,7 @@
 						<form action="/assassin/gameMaker" name="gameForm" method="POST">
 							<div class="form-group">
 								<label>Start Date</label>
-								<input type="text" class="form-control" name="startdate">
+								<input type="date" class="form-control" name="startdate">
 							</div>
 							<div class="form-group">
 								<label>End Condition</label></br>
@@ -55,8 +52,7 @@
 							</div>
 							<div class="form-group">
 								<label>End Date</label>
-								<input type="text" class="form-control" name="enddate">
-								<input type="date" name="bday">
+								<input type="date" class="form-control" name="enddate">
 							</div>
 							<div class="form-group">
 								<label>End Number of Players</label>
