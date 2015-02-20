@@ -6,9 +6,24 @@
     <title>Game Manager</title>
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+    <link href="static/css/datepicker.css" rel="stylesheet">
+    <script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+    <script src="static/js/bootstrap-datepicker.js"></script>
     <style>
         body        { padding-top:20px; word-wrap:break-word; }
     </style>
+    <script>
+		function radioChange(){
+			if(document.forms.gameForm.elements.endstate.value=="DATE"){
+				console.log("date");
+			}else if(document.forms.gameForm.elements.endstate.value=="NUMBER"){
+				console.log("number");
+			}else if(document.forms.gameForm.elements.endstate.value=="EITHER"){
+				console.log("either");
+			}
+		}
+    </script>
 </head>
 <body>
 	<div class="container">
@@ -25,7 +40,30 @@
 			<div class="row">
 				<div class="col-sm-6">
 					<div class="well">
-						Game creation stuff here
+						Game creation stuff here:
+						ID,startdate, enddate (?), starttime (?), endtime (?), endcondition varchar(20), creatorid int
+						<form action="/assassin/gameMaker" name="gameForm" method="POST">
+							<div class="form-group">
+								<label>Start Date</label>
+								<input type="text" class="form-control" name="startdate">
+							</div>
+							<div class="form-group">
+								<label>End Condition</label></br>
+								<input type="radio" name="endstate" onchange="radioChange()" value="DATE"> End on a certain date </br>
+								<input type="radio" name="endstate" onchange="radioChange()" value="NUMBER"> End when a certain number of players remain </br>
+								<input type="radio" name="endstate" onchange="radioChange()" value="EITHER"> End when either condition is met
+							</div>
+							<div class="form-group">
+								<label>End Date</label>
+								<input type="text" class="form-control" name="enddate">
+								<input type="date" name="bday">
+							</div>
+							<div class="form-group">
+								<label>End Number of Players</label>
+								<input type="text" class="form-control" name="enddate">
+							</div>
+							<button type="submit" class="btn btn-warning btn-lg">Submit</button>
+						</form>
 					</div>
 				</div>
 			</div>

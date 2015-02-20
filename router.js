@@ -78,7 +78,7 @@ module.exports = function(app, passport,db){
 	
 	//need an isLoggedIn here?
 	app.post('/assassin/join',function(req,res){
-		db.query("select * from games where id=? and status='o';",
+		db.query("select * from games where id=? and status='OPEN';",
 			[req.body.gameID],function(err,rows){
 				if(err) throw err;
 				if(rows.length==0){
@@ -100,7 +100,9 @@ module.exports = function(app, passport,db){
 		res.render('gameManager.ejs',{gameid:req.user.gameid});
 	});
 	
-	
+	app.post('/assassin/gameMaker',isLoggedIn,function(req,res){
+		//id int, status VARCHAR(10),startdate date, enddate date, starttime time, endtime time, endcondition varchar(20), creatorid int
+	});
 	
 	app.get('/assassin/logout',function(req,res){
 		req.logout();
