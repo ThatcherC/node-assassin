@@ -6,23 +6,57 @@
     <title>Game Manager</title>
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
-    <link href="static/css/datepicker.css" rel="stylesheet">
     <style>
         body        { padding-top:20px; word-wrap:break-word; }
     </style>
     <script>
 		function radioChange(){
+			var numberBox  = document.getElementById("eNumber");
+			var dateBox = document.getElementById("eDate");
 			if(document.forms.gameForm.elements.endstate.value=="DATE"){
 				console.log("date");
+				numberBox.disabled=true;
+				dateBox.disabled=false;
 			}else if(document.forms.gameForm.elements.endstate.value=="NUMBER"){
 				console.log("number");
+				numberBox.disabled=false;
+				dateBox.disabled=true;
 			}else if(document.forms.gameForm.elements.endstate.value=="EITHER"){
 				console.log("either");
+				numberBox.disabled=false;
+				dateBox.disabled=false;
 			}
 		}
+		
+		function dateLoad(){
+			var d = new Date();
+			var date = ("0"+d.getDate()).slice(-2);
+			var month = ("0"+(d.getMonth()+1)).slice(-2);
+			var s = d.getFullYear()+"-"+month+"-"+date;
+			document.getElementById("sDate").min=s;
+			
+			d.setDate(d.getDate()+1);
+			date = ("0"+d.getDate()).slice(-2);
+			month = ("0"+(d.getMonth()+1)).slice(-2);
+			s = d.getFullYear()+"-"+month+"-"+date;
+			document.getElementById("eDate").min=s;
+			
+			d.setDate(d.getDate()+1);
+			date = ("0"+d.getDate()).slice(-2);
+			month = ("0"+(d.getMonth()+1)).slice(-2);
+			s = d.getFullYear()+"-"+month+"-"+date;
+			document.getElementById("sDate").value=s;
+			
+			d.setDate(d.getDate()+2);
+			date = ("0"+d.getDate()).slice(-2);
+			month = ("0"+(d.getMonth()+1)).slice(-2);
+			s = d.getFullYear()+"-"+month+"-"+date;
+			document.getElementById("eDate").value=s;
+		}
+		
     </script>
 </head>
-<body>
+<body onload="dateLoad();">
 	<div class="container">
 		<div class="page-header text-center">
 			<h1><span class="fa fa-plus-square-o"></span> Game Maker</h1>
@@ -42,22 +76,35 @@
 						<form action="/assassin/gameMaker" name="gameForm" method="POST">
 							<div class="form-group">
 								<label>Start Date</label>
-								<input type="date" class="form-control" name="startdate">
+								<input type="date" class="form-control" name="startdate" id="sDate" min="">
 							</div>
 							<div class="form-group">
 								<label>End Condition</label></br>
-								<input type="radio" name="endstate" onchange="radioChange()" value="DATE"> End on a certain date </br>
+								<input type="radio" name="endstate" onchange="radioChange()" value="DATE" checked> End on a certain date </br>
 								<input type="radio" name="endstate" onchange="radioChange()" value="NUMBER"> End when a certain number of players remain </br>
 								<input type="radio" name="endstate" onchange="radioChange()" value="EITHER"> End when either condition is met
 							</div>
 							<div class="form-group">
 								<label>End Date</label>
-								<input type="date" class="form-control" name="enddate">
+								<input type="date" class="form-control" name="enddate" id="eDate">
 							</div>
 							<div class="form-group">
 								<label>End Number of Players</label>
-								<input type="text" class="form-control" name="enddate">
+								<input type="text" class="form-control" name="endnumber" id="eNumber" disabled>
 							</div>
+							<div class="form-group">
+								<label>Daily Times</label></br>
+								<div class="input-group col-md-2">
+									<div class="input-group-addon">Start Time</div>
+									<input type="time" class="form-control" name="starttime" id="sTime" value="07:00">
+								</div>
+								<div class="input-group col-md-2">
+									<div class="input-group-addon">End Time</div>
+									<input type="time" class="form-control" name="endtime" id="eTime" value="15:00">
+								</div>
+							</div>
+							</br>
+							</br>
 							<button type="submit" class="btn btn-warning btn-lg">Submit</button>
 						</form>
 					</div>

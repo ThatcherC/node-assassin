@@ -89,6 +89,15 @@ module.exports = function(app, passport,db){
 						[req.body.gameID,req.user.id],
 						function(err, rows){
 							if(err)throw err;
+							
+							//update req.user info -- possible not necessary?
+							var user = req.user;
+							user.gameid=req.body.gameID;
+							user.status="ALIVE";
+							req.logIn(user,function(err){
+								if(err)
+									console.log(err);
+							});
 					});
 					res.redirect('/assassin/dash');
 				}
@@ -102,6 +111,21 @@ module.exports = function(app, passport,db){
 	
 	app.post('/assassin/gameMaker',isLoggedIn,function(req,res){
 		//id int, status VARCHAR(10),startdate date, enddate date, starttime time, endtime time, endcondition varchar(20), creatorid int
+		var id = Math.floor(Math.random()*10000);
+		var body = req.body;
+		console.log(body);
+		db.query("INSERT into games values(?,'OPEN',?,?,?,?,?,?,?);",
+			[id,body.startdate,body.enddate,body.starttime+":00",body.endtime+":00",body.endnumber,body.endstate,req.user.id],
+			function(err,rows){
+				if(err)
+					throw err;
+			});
+		db.query("UPDATE users set gameid=? where id=?",
+			[id,req.user.id],function(err,rows){
+				if(err)
+					throw err;
+			});
+		res.redirect('/assassin/dash');
 	});
 	
 	app.get('/assassin/logout',function(req,res){
