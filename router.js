@@ -120,7 +120,7 @@ module.exports = function(app, passport,db){
 				if(err)
 					throw err;
 			});
-		db.query("UPDATE users set gameid=? where id=?",
+		db.query("UPDATE users set gameid=?,status='ALIVE' where id=?;",
 			[id,req.user.id],function(err,rows){
 				if(err)
 					throw err;
