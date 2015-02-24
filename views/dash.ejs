@@ -38,7 +38,7 @@
 						<strong>Name</strong>: <%= user.name %><br>
                         <strong>Game ID</strong>: <%= user.gameid %><br>
                         <strong>Status</strong>: <%= user.status %><br>
-                        <% if(user.status=="ALIVE"){ %>
+                        <% if(user.phrase!="" and user.status="ALIVE"){ %>
                         <strong>Secret Phrase</strong>: <%= user.phrase %>
                         <% } %>
                     </p>
