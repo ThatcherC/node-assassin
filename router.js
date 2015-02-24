@@ -128,6 +128,10 @@ module.exports = function(app, passport,db){
 		res.redirect('/assassin/dash');
 	});
 	
+	app.get('/assassin/instructions',function(req,res){
+		res.render('instructions.ejs');
+	});
+	
 	app.get('/assassin/logout',function(req,res){
 		req.logout();
 		res.redirect('/assassin/');
