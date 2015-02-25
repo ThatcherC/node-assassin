@@ -1,8 +1,8 @@
 //controls the starting and stopping of games in the database
 
 module.exports = function(db){
-	//setInterval(checkAllGames,900000,db);
-	setInterval(checkAllGames,6000,db);
+	setInterval(checkAllGames,900000,db);
+	//setInterval(checkAllGames,6000,db);
 };
 
 function checkAllGames(db){
