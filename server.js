@@ -35,5 +35,6 @@ app.use(flash()); // use connect-flash for flash messages stored in session
 
 
 require('./router.js')(app,passport,db);
+require('./gameMonitor.js')(db);
 app.listen(port);
 
