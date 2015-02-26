@@ -21,7 +21,7 @@ function shuffle(o){ //v1.0
 
 function startNewGames(db){
 	//find games that should be started
-	db.query("select id from games where startdate <= current_date and status='OPEN';",
+	db.query("select id from games where startdate >= current_date and status='OPEN';",
 		function(err,games){
 			if(err) throw err;
 			//start the selected games
