@@ -28,6 +28,15 @@
 				 </div>
 			 </div>
 		<% } %>
+		<% if(user.status=="WINNER"){ %>
+			   <div class="col-sm-12 text-center">
+				 <div class="alert alert-info">
+					 <a href="/assassin/join" class="alert-link"><h3><strong>Victory!</strong></h3></a></br>
+					 You are a winner of this game of Assassin.
+					 You can <a href="/assassin/join" class="alert-link">join a new game</a> to play again.
+				 </div>
+			 </div>
+		<% } %>
      </div>
      <div class="row">
         <div class="col-sm-6">
