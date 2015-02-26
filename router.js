@@ -73,7 +73,7 @@ module.exports = function(app, passport,db){
 	});
 	
 	app.get('/assassin/join',isLoggedIn,function(req,res){
-		res.render('join.ejs',{message:req.flash('joinMessage')});
+		res.render('join.ejs',{message:req.flash('joinMessage'),user:req.user});
 	});
 	
 	//need an isLoggedIn here?
@@ -111,7 +111,7 @@ module.exports = function(app, passport,db){
 	
 	app.post('/assassin/gameMaker',isLoggedIn,function(req,res){
 		//id int, status VARCHAR(10),startdate date, enddate date, starttime time, endtime time, endcondition varchar(20), creatorid int
-		var id = Math.floor(Math.random()*10000);
+		var id = 1+Math.floor(Math.random()*9999);
 		var body = req.body;
 		console.log(body);
 		db.query("INSERT into games values(?,'OPEN',?,?,?,?,?,?,?);",
