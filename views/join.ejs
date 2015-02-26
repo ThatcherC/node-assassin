@@ -19,17 +19,23 @@
 		<% if (message.length > 0) { %>
 			<div class="alert alert-danger"><%= message %></div>
 		<% } %>
-		<div class="row">
-			<div class="col-sm-6 col-sm-offset-3">
-				<form action="/assassin/join" method="POST">
-					<div class="form-group">
-						<label>Game ID Number</label>
-						<input type="text" class="form-control" name="gameID">
-					</div>
-					<button type="submit" class="btn btn-warning btn-lg">Join</button>
-				</form>
+		<% if(user.gameid==0||user.status=="WINNER"){ %>
+			<div class="row">
+				<div class="col-sm-6 col-sm-offset-3">
+					<form action="/assassin/join" method="POST">
+						<div class="form-group">
+							<label>Game ID Number</label>
+							<input type="text" class="form-control" name="gameID">
+						</div>
+						<button type="submit" class="btn btn-warning btn-lg">Join</button>
+					</form>
+				</div>
 			</div>
-		</div>
+		<% }else{ %>
+			<div class="row">
+				<div class="alert alert-danger">You can't join a game if you're already in one!</div>
+			</div>
+			
 	</div>
 </body>
 </html>
