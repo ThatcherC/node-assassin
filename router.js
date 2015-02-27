@@ -29,6 +29,17 @@ module.exports = function(app, passport,db){
 		failureFlash : true
 	}));
 	
+	// route for facebook authentication and login
+    app.get('/assassin/auth/facebook', passport.authenticate('facebook', { scope : 'email' }));
+
+    // handle the callback after facebook has authenticated the user
+    app.get('/assassin/auth/facebook/callback',
+        passport.authenticate('facebook', {
+            successRedirect : '/assassin/dash',
+            failureRedirect : '/assassin'
+        }));
+	
+	
 	//dashboard
 	app.get('/assassin/dash',isLoggedIn,function(req,res){
 		//get target list
@@ -73,6 +84,7 @@ module.exports = function(app, passport,db){
 	});
 	
 	app.get('/assassin/join',isLoggedIn,function(req,res){
+		console.log(req.user);
 		res.render('join.ejs',{message:req.flash('joinMessage'),user:req.user});
 	});
 	
