@@ -43,10 +43,9 @@ module.exports = function(app, passport,db){
 	//dashboard
 	app.get('/assassin/dash',isLoggedIn,function(req,res){
 		//get target list
-		db.query("SELECT name,id FROM users JOIN targets ON users.id=targets.targetid where targets.gameid=? and targets.hunterid=? and users.status='ALIVE';",
+		db.query("SELECT name,id FROM users JOIN targets ON users.id=targets.targetid where and targets.hunterid=? and users.gameid=?;",
 			[req.user.gameid, req.user.id],function(err,rows){
 				if(err)throw err;
-				//console.log(rows);
 				res.render('dash.ejs',{user:req.user, targets:rows, postKillMessage:req.flash('postKillMessage')});
 			});
 	});
