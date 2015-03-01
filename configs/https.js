@@ -1,5 +1,5 @@
 module.exports = {
-	"use-https":true,
+	"usehttps":false,
 	"options":{
 		"key": 'ssl/key.pem',
 		"crt":'ssl/cert.pem',

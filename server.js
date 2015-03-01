@@ -26,7 +26,7 @@ require('./configs/passport')(passport,db);
 // set up the express application
 app.use(cookieParser()); // read cookies (needed for auth)
 app.use(bodyParser()); // get information from html forms
-if(httpsConfigs.use-https){
+if(httpsConfigs.usehttps){
 	console.log("Using SSL");
 	app.use(forceSSL);
 	var serverOptions = {
@@ -53,7 +53,7 @@ require('./gameMonitor.js')(db);
 
 var server = http.createServer(app);
 server.listen(8083);
-if(httpsConfigs.use-https){
+if(httpsConfigs.usehttps){
 	console.log("Creating and starting HTTPS server");
 	var secureServer = https.createServer(httpsConfigs.options, app);
 	secureServer.listen(8084);
