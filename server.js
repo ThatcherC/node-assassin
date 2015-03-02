@@ -30,6 +30,7 @@ var serverOptions;
 if(httpsConfigs.usehttps){
 	console.log("Using SSL");
 	app.use(forceSSL);
+	app.set('httpsPort', 8084);
 	serverOptions = {
 		key: fs.readFileSync(httpsConfigs.options.key),
 		cert: fs.readFileSync(httpsConfigs.options.crt),
@@ -39,7 +40,7 @@ if(httpsConfigs.usehttps){
 //app.use("/assassin/static",express.static(__dirname+"/static"));
 
 app.set('view engine', 'ejs'); // set up ejs for templating
-app.set('httpsPort', 8084);
+
 
 // required for passport
 app.use(session({ secret: 'ilovescotchscotchyscotchscotch' })); // session secret
@@ -52,10 +53,20 @@ require('./router.js')(app,passport,db);
 require('./gameMonitor.js')(db);
 //app.listen(port);
 
-var server = http.createServer(app);
-server.listen(8083);
+var server;
 if(httpsConfigs.usehttps){
+	console.log("Creating and starting HTTP server");
+	server=http.createServer(function(req,res){
+		res.writeHead(302, {'Location': 'https://jthatch.com' + req.url});
+		res.end();
+		console.log("redirected");
+	});
+	server.listen(port);
+	
 	console.log("Creating and starting HTTPS server");
 	var secureServer = https.createServer(serverOptions, app);
 	secureServer.listen(8084);
+}else{
+	server=http.createServer(app);
+	server.listen(port);
 }
