@@ -85,7 +85,6 @@ module.exports = function(passport,db){
 		clientSecret : configAuth.facebookAuth.clientSecret,
 		callbackURL : configAuth.facebookAuth.callbackURL
 	}, function(token, refreshToken, profile, done){
-			console.log(profile.id);
 			process.nextTick(function() {
 				db.query("select * from facebookUsers where facebookid=?",
 					[profile.id],function(err,users){
@@ -122,7 +121,6 @@ module.exports = function(passport,db){
 						}
 					});
 			});
-			console.log(token);
 		}));
 					
 };
