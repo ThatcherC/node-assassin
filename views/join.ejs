@@ -19,7 +19,7 @@
 		<% if (message.length > 0) { %>
 			<div class="alert alert-danger"><%= message %></div>
 		<% } %>
-		<% if(user.gameid==0||user.status=="WINNER"){ %>
+		<% if(user.status=="DEAD"||user.status=="INACTIVE"||user.status=="WINNER"){ %>
 			<div class="row">
 				<div class="col-sm-6 col-sm-offset-3">
 					<form action="/assassin/join" method="POST">

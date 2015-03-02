@@ -20,7 +20,7 @@
     </div>
 
     <div class="row">
-		<% if(user.gameid==0){ %>
+		<% if(user.status=='DEAD' || user.status=='INACTIVE'){ %>
 			   <div class="col-sm-12 text-center">
 				 <div class="alert alert-info">
 					 <a href="/assassin/join" class="alert-link"><h3><span class="fa fa-users"></span><strong> Join a game!</strong></h3></a></br>

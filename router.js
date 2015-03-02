@@ -43,7 +43,7 @@ module.exports = function(app, passport,db){
 	//dashboard
 	app.get('/assassin/dash',isLoggedIn,function(req,res){
 		//get target list
-		db.query("SELECT name,id FROM users JOIN targets ON users.id=targets.targetid where targets.hunterid=? and users.gameid=? and users.status='ALIVE';",
+		db.query("SELECT name,id FROM users JOIN targets ON users.id=targets.targetid where targets.hunterid=? and targets.gameid=? and users.status='ALIVE';",
 			[req.user.id,req.user.gameid],function(err,rows){
 				if(err)throw err;
 				res.render('dash.ejs',{user:req.user, targets:rows, postKillMessage:req.flash('postKillMessage')});
@@ -82,8 +82,10 @@ module.exports = function(app, passport,db){
 			});
 	});
 	
+	//app.get('/assassin/witness',isLoggedIn,function(req,res){
+	//	res.render('witness.ejs',{message:req.flash('joinMessage'),user:req.user,players}
+	
 	app.get('/assassin/join',isLoggedIn,function(req,res){
-		console.log(req.user);
 		res.render('join.ejs',{message:req.flash('joinMessage'),user:req.user});
 	});
 	
@@ -117,7 +119,7 @@ module.exports = function(app, passport,db){
 	});
 	
 	app.get('/assassin/gameMaker',isLoggedIn,function(req,res){
-		res.render('gameManager.ejs',{gameid:req.user.gameid});
+		res.render('gameManager.ejs',{status:req.user.status});
 	});
 	
 	app.post('/assassin/gameMaker',isLoggedIn,function(req,res){
