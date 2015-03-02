@@ -7,10 +7,7 @@ module.exports = function(db){
 
 function checkAllGames(db){
 	startNewGames(db);
-	
-				
-/*			for each game
-				make secret phrases*/
+
 }
 
 //@ http://jsfromhell.com/array/shuffle [v1.0]
@@ -21,7 +18,7 @@ function shuffle(o){ //v1.0
 
 function startNewGames(db){
 	//find games that should be started
-	db.query("select id from games where startdate >= current_date and status='OPEN';",
+	db.query("select id from games where startdate <= current_date and status='OPEN';",
 		function(err,games){
 			if(err) throw err;
 			//start the selected games
@@ -62,6 +59,32 @@ function startNewGames(db){
 					});
 			}
 		});
+}
+
+function endGames(db){
+	//When a game is over:
+	//1. Set status to "FINISHED"
+	//2. Set winners to status="WINNER",phrase=NULL
+	
+	
+	//Games ending on a date can be automatically ended
+	/*db.query("select id from games where status='ACTIVE' and (endcondition='DATE' and enddate<=current_date;",
+		function(err,games){
+			if(err)throw err;
+		});*/
+	db.query("update games set status='FINISHED' where status='ACTIVE' and (endcondition='DATE' or endcondition='EITHER') and enddate<=current_date;",
+		function(err,rows){
+			if(err)throw err;
+		});
+	db.query("update users inner join games on users.gameid=games.id set users.status='WINNER' where games.status='FINISHED';",
+		function(err,rows){
+			if(err)throw err;
+		});
+	
+	//Games ending with NUMBER have to be individually evaluated
+	//db.query("select * from games where status='ACTIVE' and endcondition='NUMBER';",
+	//	function(err,games){
+			
 }
 
 function generateSecretPhrase(){
