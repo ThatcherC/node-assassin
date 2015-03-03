@@ -82,8 +82,10 @@ module.exports = function(app, passport,db){
 			});
 	});
 	
+	//app.get('/assassin/witness',isLoggedIn,function(req,res){
+	//	res.render('witness.ejs',{message:req.flash('joinMessage'),user:req.user,players}
+	
 	app.get('/assassin/join',isLoggedIn,function(req,res){
-		console.log(req.user);
 		res.render('join.ejs',{message:req.flash('joinMessage'),user:req.user});
 	});
 	
@@ -117,7 +119,7 @@ module.exports = function(app, passport,db){
 	});
 	
 	app.get('/assassin/gameMaker',isLoggedIn,function(req,res){
-		res.render('gameManager.ejs',{gameid:req.user.gameid});
+		res.render('gameManager.ejs',{status:req.user.status});
 	});
 	
 	app.post('/assassin/gameMaker',isLoggedIn,function(req,res){
