@@ -82,8 +82,21 @@ module.exports = function(app, passport,db){
 			});
 	});
 	
-	//app.get('/assassin/witness',isLoggedIn,function(req,res){
-	//	res.render('witness.ejs',{message:req.flash('joinMessage'),user:req.user,players}
+	app.get('/assassin/witness',isLoggedIn,function(req,res){
+		db.query("select name,id from users where gameid=?;", [req.user.gameid],
+			function(err,rows){
+				if(err) return res.end(err);
+				
+				//alphabetize the list
+				rows.sort(function(a, b){
+					if(a.name < b.name) return -1;
+					if(a.name > b.name) return 1;
+					return 0;
+				});
+				
+				res.render('witness.ejs',{message:req.flash('witnessMessage'),user:req.user,players:rows});
+			});
+	});
 	
 	app.get('/assassin/join',isLoggedIn,function(req,res){
 		res.render('join.ejs',{message:req.flash('joinMessage'),user:req.user});
@@ -98,8 +111,9 @@ module.exports = function(app, passport,db){
 					req.flash('joinMessage',"Unable to join.");
 					res.redirect("/assassin/join");
 				}else{
-					db.query("update users set gameid=?,status='ALIVE' where id=?;",
-						[req.body.gameID,req.user.id],
+					var phrase = generateSecretPhrase();
+					db.query("update users set gameid=?,status='ALIVE',phrase=? where id=?;",
+						[req.body.gameID,phrase,req.user.id],
 						function(err, rows){
 							if(err)throw err;
 							
@@ -159,3 +173,22 @@ module.exports = function(app, passport,db){
 		res.redirect('/assassin/');
 	}
 };
+
+function generateSecretPhrase(){
+	return firstWord[Math.floor(Math.random()*firstWord.length)] + " " + secondWord[Math.floor(Math.random()*secondWord.length)];
+}
+
+var secondWord = [
+	"piecake","candy","chocolate","cookie","donut","doughnut","fruit","ice cream","muffin",
+	"pie","pudding","bagel","bread","cereal","cheese","noodles","pancakes","pasta","salad","sandwich"
+	];
+
+
+var firstWord = [
+	"gator","bear","bird","camel","cat","cheetah","chicken","chimp","cow",
+	"deer","dolphin","duck","eagle","elephant","fish","fly","fox","frog","giraffe","goat",
+	"hippo","horse","kangaroo","kitten","leopard","lion","lizard","lobster","monkey","octopus",
+	"ostrich","otter","owl","oyster","panda","parrot","pelican","pig","puppy","rabbit","rat",
+	"rhino","rooster","scorpion","seal","shark","sheep","shrimp","snake","spider","squirrel",
+	"swallow","swan","tiger","turtle","vulture","walrus","weasel","whale","wolf","zebra"
+	];

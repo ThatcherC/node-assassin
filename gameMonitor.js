@@ -42,14 +42,6 @@ function startNewGames(db){
 										if(err)throw err;
 									});
 						}
-						//set secret phrases
-						for(var c=0; c<players.length; c++){
-							db.query("update users set phrase=? where id=?;",
-								[generateSecretPhrase(),players[c].id],
-								function(err,rows){
-									if(err)throw err;
-								});
-						}
 					});
 					
 				//update game status
@@ -86,22 +78,3 @@ function endGames(db){
 	//	function(err,games){
 			
 }
-
-function generateSecretPhrase(){
-	return firstWord[Math.floor(Math.random()*firstWord.length)] + " " + secondWord[Math.floor(Math.random()*secondWord.length)];
-}
-
-var secondWord = [
-	"piecake","candy","chocolate","cookie","donut","doughnut","fruit","ice cream","muffin",
-	"pie","pudding","bagel","bread","cereal","cheese","noodles","pancakes","pasta","salad","sandwich"
-	];
-
-
-var firstWord = [
-	"gator","bear","bird","camel","cat","cheetah","chicken","chimp","cow",
-	"deer","dolphin","duck","eagle","elephant","fish","fly","fox","frog","giraffe","goat",
-	"hippo","horse","kangaroo","kitten","leopard","lion","lizard","lobster","monkey","octopus",
-	"ostrich","otter","owl","oyster","panda","parrot","pelican","pig","puppy","rabbit","rat",
-	"rhino","rooster","scorpion","seal","shark","sheep","shrimp","snake","spider","squirrel",
-	"swallow","swan","tiger","turtle","vulture","walrus","weasel","whale","wolf","zebra"
-	];
