@@ -38,6 +38,17 @@
 			 </div>
 		<% } %>
      </div>
+     
+     <% if(postKillMessage.length > 0){ %>
+		<div class="row">
+			<div class="col-sm-12 text-center">
+				<div class="alert alert-info">
+					<%= postKillMessage %>
+				</div>
+			</div>	
+		 </div>
+	 <% } %>
+     
      <div class="row">
         <div class="col-sm-6">
             <div class="well">
@@ -55,16 +66,6 @@
             </div>
         </div>
     </div>
-    
-    <% if(postKillMessage.length > 0){ %>
-		<div class="row">
-			<div class="col-sm-12 text-center">
-				<div class="alert alert-info">
-					<%= postKillMessage %>
-				</div>
-			</div>	
-		 </div>
-	 <% } %>
     
     <%if (targets.length > 0){ %>
 		<% for(var i in targets){ %>
