@@ -1,0 +1,69 @@
+<!-- views/witness.ejs -->
+<!doctype html>
+<html>
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>Witness</title>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+    <style>
+        body        { padding-top:40px; word-wrap:break-word; }
+    </style>
+    <script>
+		function hunterChange(){
+			var select = document.getElementById("hunterID");
+			document.getElementById("hunterName").innerHTML=select.options[select.selectedIndex].innerHTML+"'s Secret Phrase:";
+		}
+    </script>
+    
+    
+</head>
+<body onload="hunterChange()">
+	<div class="container">
+		<div class="page-header text-center">
+			<h1><span class="fa fa-crosshairs"></span> Witness</h1>
+			<a href="/assassin/dash" class="btn btn-default btn-sm">Dashboard</a>
+		</div>
+		<% if (message.length > 0) { %>
+			<div class="alert alert-danger"><%= message %></div>
+		<% } %>
+		<% if(user.status=="ALIVE"){ %>
+			<div class="row">
+				<div class="col-sm-6 col-sm-offset-3">
+					<form action="/assassin/witness" method="POST">
+						<div class="well">
+							<div class="form-group">
+								<label>I saw... </label>
+								<select class="form-control" name="hunterID" id="hunterID" onchange="hunterChange()">
+									<% for(var i=0; i<players.length; i++){ %>
+										<option value=<%=players[i].id%>> <%=players[i].name%> </option>
+									<% } %>
+								</select>	
+							</div>
+							<div class="form-group">
+								<label>...assassinate... </label>
+								<select class="form-control" name="targetID" id="targetID">
+									<% for(var i=0; i<players.length; i++){ %>
+										<option value=<%=players[i].id%>><%=players[i].name%></option>
+									<% } %>
+								</select>	
+							</div>
+						</div>
+						<div class="well">
+							<div class="form-group">
+								<label id="hunterName">Game ID Number</label>
+								<input type="text" class="form-control" name="hunterPhrase">
+							</div>
+							<button type="submit" class="btn btn-warning btn-lg">Join</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		<% }else{ %>
+			<div class="row">
+				<div class="alert alert-danger">You can't witness anything if you're not alive!</div>
+			</div>
+		<% } %>
+	</div>
+</body>
+</html>

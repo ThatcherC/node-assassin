@@ -93,10 +93,47 @@ module.exports = function(app, passport,db){
 					if(a.name > b.name) return 1;
 					return 0;
 				});
-				
+				//console.log(req.flash('witnessMessage'));
 				res.render('witness.ejs',{message:req.flash('witnessMessage'),user:req.user,players:rows});
 			});
 	});
+	
+	app.post('/assassin/witness',isLoggedIn,function(req,res){
+		//check if the secret phrase matches
+		db.query('select status from users where id=? and phrase=?',
+			[req.body.hunterID,req.body.hunterPhrase],
+			function(err,rows){
+				if(err) console.log(err);
+				if(rows.length==0){		//no match for id and phrase
+					req.flash('witnessMessage',"That phrase doesn't match that user");
+					console.log("no match");
+					res.redirect('/assassin/witness');
+				}else if(rows[0].status=="DEAD"){		// if the user matches but is dead
+					req.flash('witnessMessage',"That assassin is already dead!");
+					console.log("already dead");
+					res.redirect('/assassin/witness');
+				}else{					//if everything checks out, find the kill record
+					
+					db.query('select * from kills where hunterid=? and targetid=? and gameid=?',
+						[req.body.hunterID,req.body.targetID,req.user.gameid],
+						function(err,rows){
+							if(err) console.log(err);
+							if(rows.length==0){
+								console.log("no recored");
+								req.flash('witnessMessage',"There is no record of that kill occurring");
+								res.redirect('/assassin/witness');
+							}else{
+								console.log("confirmed");
+								req.flash('witnessMessage',"Kill confirmed. You are a witness!");
+								///TODO
+								///update targetting info
+								
+								res.redirect('/assassin/witness');
+							}
+						});
+				}
+			});
+		});
 	
 	app.get('/assassin/join',isLoggedIn,function(req,res){
 		res.render('join.ejs',{message:req.flash('joinMessage'),user:req.user});
