@@ -65,7 +65,7 @@ module.exports = function(app, passport,db){
 							if(err)throw err;
 						});
 					//update player status
-					db.query("update users set status='DEAD',gameid=0 where id=?;",
+					db.query("update users set status='DEAD' where id=?;",
 						[req.body.targetID],function(err,rows){
 								if(err)throw err;
 						});
@@ -127,7 +127,19 @@ module.exports = function(app, passport,db){
 								req.flash('witnessMessage',"Kill confirmed. You are a witness!");
 								///TODO
 								///update targetting info
-								
+								db.query('update targets set hunterid=? where hunterid=?;',
+									[req.user.id,req.body.hunterID],function(err,rows){
+										if(err)console.log(err)
+									});
+								db.query('update targets set targetid=? where targetid=?;',
+									[req.user.id,req.body.hunterID],function(err,rows){
+										if(err)console.log(err)
+									});
+								db.query('update users set status="WITNESSED" where id=?;',
+									[req.body.hunterID],function(err,rows){
+										if(err)console.log(err)
+									});
+									
 								res.redirect('/assassin/witness');
 							}
 						});
