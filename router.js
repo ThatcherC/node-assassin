@@ -1,47 +1,47 @@
 module.exports = function(app, passport,db){
 	//homepage
-	app.get('/assassin/',function(req,res){
+	app.get('/tag/',function(req,res){
 		res.render('index.ejs');
 	});
 
 	//login
-	app.get('/assassin/login',function(req,res){
+	app.get('/tag/login',function(req,res){
 		res.render('login.ejs',{message:req.flash('loginMessage')});
 	});
 
 	//process the login info
-	app.post('/assassin/login',passport.authenticate('local-login', {
-		successRedirect : '/assassin/dash',
-		failureRedirect : '/assassin/login',
+	app.post('/tag/login',passport.authenticate('local-login', {
+		successRedirect : '/tag/dash',
+		failureRedirect : '/tag/login',
 		failureFlash : true
 	}));
 		
 	
 	//signup
-	app.get('/assassin/signup',function(req,res){
+	app.get('/tag/signup',function(req,res){
 		res.render('signup.ejs',{message:req.flash('signupMessage')});
 	});
 	
 	//process the signup info
-	app.post('/assassin/signup',passport.authenticate('local-signup',{
-		successRedirect : '/assassin/dash',
-		failureRedirect : '/assassin/signup',
+	app.post('/tag/signup',passport.authenticate('local-signup',{
+		successRedirect : '/tag/dash',
+		failureRedirect : '/tag/signup',
 		failureFlash : true
 	}));
 	
 	// route for facebook authentication and login
-    app.get('/assassin/auth/facebook', passport.authenticate('facebook', { scope : 'email' }));
+    app.get('/tag/auth/facebook', passport.authenticate('facebook', { scope : 'email' }));
 
     // handle the callback after facebook has authenticated the user
-    app.get('/assassin/auth/facebook/callback',
+    app.get('/tag/auth/facebook/callback',
         passport.authenticate('facebook', {
-            successRedirect : '/assassin/dash',
-            failureRedirect : '/assassin'
+            successRedirect : '/tag/dash',
+            failureRedirect : '/tag'
         }));
 	
 	
 	//dashboard
-	app.get('/assassin/dash',isLoggedIn,function(req,res){
+	app.get('/tag/dash',isLoggedIn,function(req,res){
 		//get target list
 		db.query("SELECT name,id FROM users JOIN targets ON users.id=targets.targetid where targets.hunterid=? and targets.gameid=? and users.status='ALIVE';",
 			[req.user.id,req.user.gameid],function(err,rows){
@@ -50,7 +50,7 @@ module.exports = function(app, passport,db){
 			});
 	});
 	
-	app.post('/assassin/dash',isLoggedIn,function(req,res){
+	app.post('/tag/dash',isLoggedIn,function(req,res){
 		//check if the passphrase matches
 		//if it does, put in a kill record
 		//else, return a failure message
@@ -78,11 +78,11 @@ module.exports = function(app, passport,db){
 				}else{
 					req.flash("postKillMessage","Failure");
 				}
-				res.redirect("/assassin/dash");
+				res.redirect("/tag/dash");
 			});
 	});
 	
-	app.get('/assassin/witness',isLoggedIn,function(req,res){
+	app.get('/tag/witness',isLoggedIn,function(req,res){
 		db.query("select name,id from users where gameid=?;", [req.user.gameid],
 			function(err,rows){
 				if(err) return res.end(err);
@@ -98,7 +98,7 @@ module.exports = function(app, passport,db){
 			});
 	});
 	
-	app.post('/assassin/witness',isLoggedIn,function(req,res){
+	app.post('/tag/witness',isLoggedIn,function(req,res){
 		//check if the secret phrase matches
 		db.query('select status from users where id=? and phrase=?',
 			[req.body.hunterID,req.body.hunterPhrase],
@@ -107,11 +107,11 @@ module.exports = function(app, passport,db){
 				if(rows.length==0){		//no match for id and phrase
 					req.flash('witnessMessage',"That phrase doesn't match that user");
 					console.log("no match");
-					res.redirect('/assassin/witness');
+					res.redirect('/tag/witness');
 				}else if(rows[0].status=="DEAD"){		// if the user matches but is dead
-					req.flash('witnessMessage',"That assassin is already dead!");
+					req.flash('witnessMessage',"That player is already out!");
 					console.log("already dead");
-					res.redirect('/assassin/witness');
+					res.redirect('/tag/witness');
 				}else{					//if everything checks out, find the kill record
 					
 					db.query('select * from kills where hunterid=? and targetid=? and gameid=?',
@@ -121,7 +121,7 @@ module.exports = function(app, passport,db){
 							if(rows.length==0){
 								console.log("no recored");
 								req.flash('witnessMessage',"There is no record of that kill occurring");
-								res.redirect('/assassin/witness');
+								res.redirect('/tag/witness');
 							}else{
 								console.log("confirmed");
 								req.flash('witnessMessage',"Kill confirmed. You are a witness!");
@@ -140,25 +140,25 @@ module.exports = function(app, passport,db){
 										if(err)console.log(err)
 									});
 									
-								res.redirect('/assassin/witness');
+								res.redirect('/tag/witness');
 							}
 						});
 				}
 			});
 		});
 	
-	app.get('/assassin/join',isLoggedIn,function(req,res){
+	app.get('/tag/join',isLoggedIn,function(req,res){
 		res.render('join.ejs',{message:req.flash('joinMessage'),user:req.user});
 	});
 	
 	//need an isLoggedIn here?
-	app.post('/assassin/join',function(req,res){
+	app.post('/tag/join',function(req,res){
 		db.query("select * from games where id=? and status='OPEN';",
 			[req.body.gameID],function(err,rows){
 				if(err) throw err;
 				if(rows.length==0){
 					req.flash('joinMessage',"Unable to join.");
-					res.redirect("/assassin/join");
+					res.redirect("/tag/join");
 				}else{
 					var phrase = generateSecretPhrase();
 					db.query("update users set gameid=?,status='ALIVE',phrase=? where id=?;",
@@ -175,17 +175,17 @@ module.exports = function(app, passport,db){
 									console.log(err);
 							});
 					});
-					res.redirect('/assassin/dash');
+					res.redirect('/tag/dash');
 				}
 			});
 
 	});
 	
-	app.get('/assassin/gameMaker',isLoggedIn,function(req,res){
+	app.get('/tag/gameMaker',isLoggedIn,function(req,res){
 		res.render('gameManager.ejs',{status:req.user.status});
 	});
 	
-	app.post('/assassin/gameMaker',isLoggedIn,function(req,res){
+	app.post('/tag/gameMaker',isLoggedIn,function(req,res){
 		//id int, status VARCHAR(10),startdate date, enddate date, starttime time, endtime time, endcondition varchar(20), creatorid int
 		var id = 1+Math.floor(Math.random()*9999);
 		var body = req.body;
@@ -201,16 +201,16 @@ module.exports = function(app, passport,db){
 				if(err)
 					throw err;
 			});
-		res.redirect('/assassin/dash');
+		res.redirect('/tag/dash');
 	});
 	
-	app.get('/assassin/instructions',function(req,res){
+	app.get('/tag/instructions',function(req,res){
 		res.render('instructions.ejs');
 	});
 	
-	app.get('/assassin/logout',function(req,res){
+	app.get('/tag/logout',function(req,res){
 		req.logout();
-		res.redirect('/assassin/');
+		res.redirect('/tag/');
     });
     
     // route middleware to make sure a user is logged in
@@ -219,7 +219,7 @@ module.exports = function(app, passport,db){
 		if (req.isAuthenticated())
 			return next();
 		// if they aren't redirect them to the home page
-		res.redirect('/assassin/');
+		res.redirect('/tag/');
 	}
 };
 

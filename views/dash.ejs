@@ -3,7 +3,7 @@
 <html>
 <head>
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <title>Assassin Dashboard</title>
+    <title>Tag Dashboard</title>
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
     <style>
@@ -15,26 +15,26 @@
 
     <div class="page-header text-center">
         <h1><span class="fa fa-crosshairs"></span> Dashboard</h1>
-        <a href="/assassin/instructions" class="btn btn-default btn-sm">Instructions</a>
-        <a href="/assassin/witness" class="btn btn-default btn-sm">Witness</a>
-        <a href="/assassin/logout" class="btn btn-default btn-sm">Logout</a>
+        <a href="/tag/instructions" class="btn btn-default btn-sm">Instructions</a>
+        <a href="/tag/witness" class="btn btn-default btn-sm">Witness</a>
+        <a href="/tag/logout" class="btn btn-default btn-sm">Logout</a>
     </div>
 
     <div class="row">
 		<% if(user.status=='DEAD' || user.status=='INACTIVE'){ %>
 			   <div class="col-sm-12 text-center">
 				 <div class="alert alert-info">
-					 <a href="/assassin/join" class="alert-link"><h3><span class="fa fa-users"></span><strong> Join a game!</strong></h3></a></br>
-					 You'll have to <a href="/assassin/join" class="alert-link">join a game</a> before you can play.
+					 <a href="/tag/join" class="alert-link"><h3><span class="fa fa-users"></span><strong> Join a game!</strong></h3></a></br>
+					 You'll have to <a href="/tag/join" class="alert-link">join a game</a> before you can play.
 				 </div>
 			 </div>
 		<% } %>
 		<% if(user.status=="WINNER"){ %>
 			   <div class="col-sm-12 text-center">
 				 <div class="alert alert-info">
-					 <a href="/assassin/join" class="alert-link"><h3><strong>Victory!</strong></h3></a></br>
-					 You are a winner of this game of Assassin.
-					 You can <a href="/assassin/join" class="alert-link">join a new game</a> to play again.
+					 <a href="/tag/join" class="alert-link"><h3><strong>Victory!</strong></h3></a></br>
+					 You are a winner of this game of Tag.
+					 You can <a href="/tag/join" class="alert-link">join a new game</a> to play again.
 				 </div>
 			 </div>
 		<% } %>
@@ -78,7 +78,7 @@
 						<p>
 							<strong>Name</strong>: <%= targets[i].name %><br>			
 						</p>
-						<form action="/assassin/dash" method="POST">
+						<form action="/tag/dash" method="POST">
 							<input type="hidden" value="<%=targets[i].id%>" class="form-control" name="targetID">
 							<div class="form-group">
 								<label>Target's Pass Phrase</label>

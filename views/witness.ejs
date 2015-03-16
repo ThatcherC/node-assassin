@@ -22,7 +22,7 @@
 	<div class="container">
 		<div class="page-header text-center">
 			<h1><span class="fa fa-crosshairs"></span> Witness</h1>
-			<a href="/assassin/dash" class="btn btn-default btn-sm">Dashboard</a>
+			<a href="/tag/dash" class="btn btn-default btn-sm">Dashboard</a>
 		</div>
 		<% if (message.length > 0) { %>
 			<div class="alert alert-danger"><%= message %></div>
@@ -30,7 +30,7 @@
 		<% if(user.status=="ALIVE"){ %>
 			<div class="row">
 				<div class="col-sm-6 col-sm-offset-3">
-					<form action="/assassin/witness" method="POST">
+					<form action="/tag/witness" method="POST">
 						<div class="well">
 							<div class="form-group">
 								<label>I saw... </label>
@@ -41,7 +41,7 @@
 								</select>	
 							</div>
 							<div class="form-group">
-								<label>...assassinate... </label>
+								<label>...tag... </label>
 								<select class="form-control" name="targetID" id="targetID">
 									<% for(var i=0; i<players.length; i++){ %>
 										<option value=<%=players[i].id%>><%=players[i].name%></option>
@@ -61,7 +61,7 @@
 			</div>
 		<% }else{ %>
 			<div class="row">
-				<div class="alert alert-danger">You can't witness anything if you're not alive!</div>
+				<div class="alert alert-danger">You can't witness anything if you're out!</div>
 			</div>
 		<% } %>
 	</div>

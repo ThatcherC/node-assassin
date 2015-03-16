@@ -14,7 +14,7 @@
 	<div class="container">
 		<div class="page-header text-center">
 			<h1><span class="fa fa-crosshairs"></span> Join a Game</h1>
-			<a href="/assassin/dash" class="btn btn-default btn-sm">Dashboard</a>
+			<a href="/tag/dash" class="btn btn-default btn-sm">Dashboard</a>
 		</div>
 		<% if (message.length > 0) { %>
 			<div class="alert alert-danger"><%= message %></div>
@@ -22,7 +22,7 @@
 		<% if(user.status=="DEAD"||user.status=="INACTIVE"||user.status=="WINNER"){ %>
 			<div class="row">
 				<div class="col-sm-6 col-sm-offset-3">
-					<form action="/assassin/join" method="POST">
+					<form action="/tag/join" method="POST">
 						<div class="form-group">
 							<label>Game ID Number</label>
 							<input type="text" class="form-control" name="gameID">
