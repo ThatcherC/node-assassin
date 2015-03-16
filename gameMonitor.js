@@ -68,7 +68,7 @@ function endGames(db){
 		function(err,rows){
 			if(err)throw err;
 		});
-	db.query("update users inner join games on users.gameid=games.id set users.status='WINNER' where games.status='FINISHED';",
+	db.query("update users inner join games on users.gameid=games.id set users.status='WINNER' where games.status='FINISHED' and users.status='ALIVE';",
 		function(err,rows){
 			if(err)throw err;
 		});
