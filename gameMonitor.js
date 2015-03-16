@@ -7,7 +7,7 @@ module.exports = function(db){
 
 function checkAllGames(db){
 	startNewGames(db);
-
+	endGames(db);
 }
 
 //@ http://jsfromhell.com/array/shuffle [v1.0]
