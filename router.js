@@ -182,7 +182,18 @@ module.exports = function(app, passport,db){
 	});
 	
 	app.get('/tag/gameMaker',isLoggedIn,function(req,res){
-		res.render('gameManager.ejs',{status:req.user.status});
+		db.query('select creatorid from games where id=?;',[req.user.gameid],
+			function(err,rows){
+				if(err)throw err;
+				if(rows[0].creatorid=req.user.id){
+					db.query("select name from users where gameid=?;",[req.user.gameid],
+						function(err,rows){
+							res.render('gameManager.ejs',{status:req.user.status,creator:true,taggers:rows});
+						});
+				}else{
+					res.render('gameManager.ejs',{status:req.user.status,creator:false});
+				}
+			});
 	});
 	
 	app.post('/tag/gameMaker',isLoggedIn,function(req,res){

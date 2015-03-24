@@ -62,56 +62,68 @@
 			<h1><span class="fa fa-plus-square-o"></span> Game Maker</h1>
 			<a href="/assassin/dash" class="btn btn-default btn-sm">Dash</a>
 		</div>
-		
-		<% if(status=='ALIVE'){ %>
-			<div class="row">
-				<div class="alert alert-danger">You can't create a game if you're already in one!</div>
-			</div>
-		<% }else{ %>
+		<% if(creator){ %>
 			<div class="row">
 				<div class="col-sm-6">
 					<div class="well">
-						Game creation stuff here:
-						ID,startdate, enddate (?), starttime (?), endtime (?), endcondition varchar(20), creatorid int
-						<form action="/tag/gameMaker" name="gameForm" method="POST">
-							<div class="form-group">
-								<label>Start Date</label>
-								<input type="date" class="form-control" name="startdate" id="sDate" min="">
-							</div>
-							<div class="form-group">
-								<label>End Condition</label></br>
-								<input type="radio" name="endstate" onchange="radioChange()" value="DATE" checked> End on a certain date </br>
-								<input type="radio" name="endstate" onchange="radioChange()" value="NUMBER"> End when a certain number of players remain </br>
-								<input type="radio" name="endstate" onchange="radioChange()" value="EITHER"> End when either condition is met
-							</div>
-							<div class="form-group">
-								<label>End Date</label>
-								<input type="date" class="form-control" name="enddate" id="eDate">
-							</div>
-							<div class="form-group">
-								<label>End Number of Players</label>
-								<input type="text" class="form-control" name="endnumber" id="eNumber" disabled>
-							</div>
-							<div class="form-group">
-								<label>Daily Times</label></br>
-								<div class="input-group col-md-2">
-									<div class="input-group-addon">Start Time</div>
-									<input type="time" class="form-control" name="starttime" id="sTime" value="07:00">
-								</div>
-								<div class="input-group col-md-2">
-									<div class="input-group-addon">End Time</div>
-									<input type="time" class="form-control" name="endtime" id="eTime" value="15:00">
-								</div>
-							</div>
-							</br>
-							</br>
-							<button type="submit" class="btn btn-warning btn-lg">Submit</button>
-						</form>
+						<div style="height:200px;overflow:auto;background-color:white;border:solid black 1px">
+							<% for(t in taggers){ %>
+								<%= taggers[t].name %></br>
+							<% } %>
+						</div>
 					</div>
 				</div>
 			</div>
+		<% }else{ %>
+			<% if(status=='ALIVE'){ %>
+				<div class="row">
+					<div class="alert alert-danger">You can't create a game if you're already in one!</div>
+				</div>
+			<% }else{ %>
+				<div class="row">
+					<div class="col-sm-6">
+						<div class="well">
+							Game creation stuff here:
+							ID,startdate, enddate (?), starttime (?), endtime (?), endcondition varchar(20), creatorid int
+							<form action="/tag/gameMaker" name="gameForm" method="POST">
+								<div class="form-group">
+									<label>Start Date</label>
+									<input type="date" class="form-control" name="startdate" id="sDate" min="">
+								</div>
+								<div class="form-group">
+									<label>End Condition</label></br>
+									<input type="radio" name="endstate" onchange="radioChange()" value="DATE" checked> End on a certain date </br>
+									<input type="radio" name="endstate" onchange="radioChange()" value="NUMBER"> End when a certain number of players remain </br>
+									<input type="radio" name="endstate" onchange="radioChange()" value="EITHER"> End when either condition is met
+								</div>
+								<div class="form-group">
+									<label>End Date</label>
+									<input type="date" class="form-control" name="enddate" id="eDate">
+								</div>
+								<div class="form-group">
+									<label>End Number of Players</label>
+									<input type="text" class="form-control" name="endnumber" id="eNumber" disabled>
+								</div>
+								<div class="form-group">
+									<label>Daily Times</label></br>
+									<div class="input-group col-md-2">
+										<div class="input-group-addon">Start Time</div>
+										<input type="time" class="form-control" name="starttime" id="sTime" value="07:00">
+									</div>
+									<div class="input-group col-md-2">
+										<div class="input-group-addon">End Time</div>
+										<input type="time" class="form-control" name="endtime" id="eTime" value="15:00">
+									</div>
+								</div>
+								</br>
+								</br>
+								<button type="submit" class="btn btn-warning btn-lg">Submit</button>
+							</form>
+						</div>
+					</div>
+				</div>
+			<% } %>
 		<% } %>
-		
 	</div>
 </body>
 </head>
