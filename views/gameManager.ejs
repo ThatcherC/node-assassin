@@ -72,7 +72,7 @@
 						<div style="height:200px;overflow:auto;background-color:white;border:solid black 1px">
 							<% for(t in taggers){ %>
 								<%= taggers[t].name %></br>
-								<% if(taggers[t].status="ALIVE"){aliveTaggers++;} %>
+								<% if(taggers[t].status=="ALIVE"){aliveTaggers++;} %>
 							<% } %>
 						</div>
 						<h3><%= aliveTaggers %> Untagged</h3>
