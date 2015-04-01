@@ -63,6 +63,7 @@
 			<h1><span class="fa fa-plus-square-o"></span> Game Maker</h1>
 			<a href="/assassin/dash" class="btn btn-default btn-sm">Dash</a>
 		</div>
+		<% var aliveTaggers = 0 %>
 		<% if(creator){ %>
 			<div class="row">
 				<div class="col-sm-6">
@@ -71,8 +72,10 @@
 						<div style="height:200px;overflow:auto;background-color:white;border:solid black 1px">
 							<% for(t in taggers){ %>
 								<%= taggers[t].name %></br>
+								<% if(taggers[t].status="ALIVE"){aliveTaggers++;} %>
 							<% } %>
 						</div>
+						<h3><%= aliveTaggers %> Untagged</h3>
 					</div>
 				</div>
 			</div>

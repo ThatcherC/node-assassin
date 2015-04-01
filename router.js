@@ -186,7 +186,7 @@ module.exports = function(app, passport,db){
 			function(err,rows){
 				if(err)throw err;
 				if(rows[0].creatorid=req.user.id){
-					db.query("select name from users where gameid=?;",[req.user.gameid],
+					db.query("select name,status from users where gameid=?;",[req.user.gameid],
 						function(err,rows){
 							res.render('gameManager.ejs',{status:req.user.status,creator:true,taggers:rows});
 						});
