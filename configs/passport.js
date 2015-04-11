@@ -122,8 +122,48 @@ module.exports = function(passport,db){
 					});
 			});
 		}));
-					
-};
+				
+	passport.use(new FacebookTokenStrategy({
+			clientID: configAuth.facebookAuth.clientID,
+			clientSecret: configAuth.facebookAuth.clientSecret
+		}, function(accessToken, refreshToken, profile, done){
+			process.nextTick(function() {
+				db.query("select * from facebookUsers where facebookid=?",
+					[profile.id],function(err,users){
+						if(err) return done(err);
+						
+						if(users[0]){		//if the user exists
+							//log them in
+							db.query("select * from users where id=?",
+								[users[0].id],function(err,rows){
+									if(err) return done(err);
+									return done(null,rows[0]);
+								});
+						}else{				//if it's a new user
+							// sign them up
+							var newUser = {
+								name : profile.name.givenName+" "+profile.name.familyName,
+								email : profile.emails[0].value,
+								status: "INACTIVE"
+							};
+							db.query("insert into users values(?,?,NULL,NULL,NULL,0,'INACTIVE');",
+								[newUser.name,newUser.email],
+								function(err,rows){
+									if(err) done(err);
+								});
+							db.query("select LAST_INSERT_ID() as id;",
+								function(err,rows){
+									newUser.id=rows[0].id;
+									db.query("insert into facebookUsers values(?,?,?);",
+										[rows[0].id,profile.id,accessToken],function(err,rows){
+											if(err) done(err);
+											return done(null,newUser);
+										});
+								});
+						}
+					});
+			});
+	}));
 					
 function createNewUser(user,db){
 	db.query("insert into users values ('name','?','?',NULL,NULL);",
