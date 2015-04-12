@@ -31,7 +31,11 @@ module.exports = function(app, passport,db){
 	
 	// route for facebook authentication and login
     app.get('/tag/auth/facebook', passport.authenticate('facebook', { scope : 'email' }));
-    app.get('/tag/m/auth/facebook',passport.authenticate('facebook-token', { scope : 'email' }));
+    app.get('/tag/m/auth/facebook',passport.authenticate('facebook-token', { scope : 'email' },
+		function (req, res) {
+    			// do something with req.user
+    			res.send(req.user? 200 : 401);
+  		}));
 
     // handle the callback after facebook has authenticated the user
     app.get('/tag/auth/facebook/callback',

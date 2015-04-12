@@ -2,6 +2,7 @@
 
 var LocalStrategy = require('passport-local').Strategy;
 var FacebookStrategy = require('passport-facebook').Strategy;
+var FacebookTokenStrategy = require('passport-facebook-token').Strategy;
 var bcrypt = require('bcrypt-nodejs');
 
 // load the auth variables
@@ -164,6 +165,7 @@ module.exports = function(passport,db){
 					});
 			});
 	}));
+}
 					
 function createNewUser(user,db){
 	db.query("insert into users values ('name','?','?',NULL,NULL);",
