@@ -128,19 +128,22 @@ module.exports = function(passport,db){
 			clientID: configAuth.facebookAuth.clientID,
 			clientSecret: configAuth.facebookAuth.clientSecret
 		}, function(accessToken, refreshToken, profile, done){
-			process.nextTick(function() {
+				process.nextTick(function() {
 				db.query("select * from facebookUsers where facebookid=?",
 					[profile.id],function(err,users){
 						if(err) return done(err);
 						
 						if(users[0]){		//if the user exists
 							//log them in
+							console.log(users[0]);
 							db.query("select * from users where id=?",
 								[users[0].id],function(err,rows){
 									if(err) return done(err);
+									console.log(users[0].name);
 									return done(null,rows[0]);
 								});
 						}else{				//if it's a new user
+							console.log("new user?");
 							// sign them up
 							var newUser = {
 								name : profile.name.givenName+" "+profile.name.familyName,
