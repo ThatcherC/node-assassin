@@ -56,6 +56,24 @@ module.exports = function(app, passport,db){
 			});
 	});
 	
+	app.get('/tag/m/dash',isLoggedIn,function(req,res){
+		//get target list
+		db.query("SELECT name,id FROM users JOIN targets ON users.id=targets.targetid where targets.hunterid=? and targets.gameid=? and users.status='ALIVE';",
+			[req.user.id,req.user.gameid],function(err,rows){
+				if(err)throw err;
+				res.json({user:req.user, targets:rows, postKillMessage:req.flash('postKillMessage')});
+			});
+	});
+	
+	app.get('/tag/dash',isLoggedIn,function(req,res){
+		//get target list
+		db.query("SELECT name,id FROM users JOIN targets ON users.id=targets.targetid where targets.hunterid=? and targets.gameid=? and users.status='ALIVE';",
+			[req.user.id,req.user.gameid],function(err,rows){
+				if(err)throw err;
+				res.render('dash.ejs',{user:req.user, targets:rows, postKillMessage:req.flash('postKillMessage')});
+			});
+	});
+	
 	app.post('/tag/dash',isLoggedIn,function(req,res){
 		//check if the passphrase matches
 		//if it does, put in a kill record
