@@ -139,7 +139,7 @@ module.exports = function(passport,db){
 							db.query("select * from users where id=?",
 								[users[0].id],function(err,rows){
 									if(err) return done(err);
-									console.log(users[0].name);
+									console.log(rows[0].name);
 									return done(null,rows[0]);
 								});
 						}else{				//if it's a new user
