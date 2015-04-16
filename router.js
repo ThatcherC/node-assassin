@@ -56,15 +56,6 @@ module.exports = function(app, passport,db){
 			});
 	});
 	
-	app.get('/tag/m/dash',isLoggedIn,function(req,res){
-		//get target list
-		db.query("SELECT name,id FROM users JOIN targets ON users.id=targets.targetid where targets.hunterid=? and targets.gameid=? and users.status='ALIVE';",
-			[req.user.id,req.user.gameid],function(err,rows){
-				if(err)throw err;
-				res.json({user:req.user, targets:rows, postKillMessage:req.flash('postKillMessage')});
-			});
-	});
-	
 	app.get('/tag/dash',isLoggedIn,function(req,res){
 		//get target list
 		db.query("SELECT name,id FROM users JOIN targets ON users.id=targets.targetid where targets.hunterid=? and targets.gameid=? and users.status='ALIVE';",
@@ -206,7 +197,7 @@ module.exports = function(app, passport,db){
 	});
 	
 	app.get('/tag/gameMaker',isLoggedIn,function(req,res){
-		db.query('select creatorid from games where id=?;',[req.user.gameid],
+		db.query('select creatorid,status from games where id=? and status!="FINISHED";',[req.user.gameid],
 			function(err,rows){
 				if(err)throw err;
 				if(rows[0].creatorid=req.user.id){
@@ -248,6 +239,54 @@ module.exports = function(app, passport,db){
 		res.redirect('/tag/');
     });
     
+    //=====Mobile pages=====
+    //======================
+    
+    app.get('/tag/m/dash',mobileIsLoggedIn,function(req,res){
+		//get target list
+		db.query("SELECT name,id FROM users JOIN targets ON users.id=targets.targetid where targets.hunterid=? and targets.gameid=? and users.status='ALIVE';",
+			[req.user.id,req.user.gameid],function(err,rows){
+				if(err)throw err;
+				res.json({user:req.user, targets:rows, postKillMessage:req.flash('postKillMessage')});
+			});
+	});
+    
+	app.post('/tag/m/dash',mobileIsLoggedIn,function(req,res){
+		//check if the passphrase matches
+		//if it does, put in a kill record
+		//else, return a failure message
+		db.query("SELECT phrase FROM users where id=?;",[req.body.targetID],
+			function(err,rows){
+				if(req.body.passphrase==rows[0].phrase){
+					req.flash("postKillMessage","Success!");
+					//record the kill
+					db.query("insert into kills values(?,?,?,NULL);",
+						[req.user.id,req.body.targetID,req.user.gameid],
+						function(err,rows){
+							if(err)throw err;
+						});
+					//update player status
+					db.query("update users set status='DEAD' where id=?;",
+						[req.body.targetID],function(err,rows){
+								if(err)throw err;
+						});
+					//transfer targets
+					db.query("update targets set hunterid=? where hunterid=?;",
+						[req.user.id,req.body.targetID],
+						function(err,rows){
+							if(err)throw err;
+						});
+				}else{
+					req.flash("postKillMessage","Failure");
+				}
+				res.redirect("/tag/m/dash");
+			});
+	});
+    
+    
+    //=====End of Mobile Pages=====
+    
+    
     // route middleware to make sure a user is logged in
 	function isLoggedIn(req, res, next) {
 		// if user is authenticated in the session, carry on 
@@ -258,6 +297,17 @@ module.exports = function(app, passport,db){
 		// if they aren't redirect them to the home page
 		console.log("not logged in");
 		res.redirect('/tag/');
+	}
+	
+	function mobileIsLoggedIn(req, res, next) {
+		// if user is authenticated in the session, carry on 
+		if (req.isAuthenticated()){
+			console.log("Logged in");
+			return next();
+		}
+		// if they aren't redirect them to the home page
+		console.log("not logged in");
+		res.json({"error":"Not logged in"});
 	}
 };
 
