@@ -197,8 +197,8 @@ module.exports = function(app, passport,db){
 	});
 	
 	app.get('/tag/gameMaker',isLoggedIn,function(req,res){
-		db.query('select creatorid,status from games where id=? and status!="FINISHED"
-		;',[req.user.gameid],
+		db.query('select creatorid,status from games where id=? and status!="FINISHED"'
+		,[req.user.gameid],
 			function(err,rows){
 				if(err)throw err;
 				if(rows.length!=0){
