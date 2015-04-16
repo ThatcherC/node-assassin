@@ -197,14 +197,19 @@ module.exports = function(app, passport,db){
 	});
 	
 	app.get('/tag/gameMaker',isLoggedIn,function(req,res){
-		db.query('select creatorid,status from games where id=? and status!="FINISHED";',[req.user.gameid],
+		db.query('select creatorid,status from games where id=? and status!="FINISHED"
+		;',[req.user.gameid],
 			function(err,rows){
 				if(err)throw err;
-				if(rows[0].creatorid=req.user.id){
-					db.query("select name,status from users where gameid=?;",[req.user.gameid],
-						function(err,rows){
-							res.render('gameManager.ejs',{status:req.user.status,creator:true,taggers:rows});
-						});
+				if(rows.length!=0){
+					if(rows[0].creatorid=req.user.id){
+						db.query("select name,status from users where gameid=?;",[req.user.gameid],
+							function(err,rows){
+								res.render('gameManager.ejs',{status:req.user.status,creator:true,taggers:rows});
+							});
+					}else{
+						res.render('gameManager.ejs',{status:req.user.status,creator:false});
+					}
 				}else{
 					res.render('gameManager.ejs',{status:req.user.status,creator:false});
 				}
